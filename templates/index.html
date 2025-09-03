@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="/static/img/logo.ico" />
+  <title>CrimeCognizer - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      background: radial-gradient(circle at 20% 10%, #23244d 0%, #181c2f 100%);
+      color: #f1f5f9;
+      min-height: 90vh;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.02em;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-radius: 24px;
+      box-shadow: 0 2px 24px rgba(99,102,241,0.10);
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 2;
+      background: rgba(30,41,59,0.92);
+      border: 2px solid #23244d;
+    }
+    .navigation a {
+      color: #f1f5f9;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+      position: relative;
+      letter-spacing: 0.7px;
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .navigation a:hover {
+      color: #a5b4fc;
+    }
+    .file-btn {
+      background: linear-gradient(90deg, #6366f1 60%, #a78bfa 100%);
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      box-shadow: 0 2px 12px #6366f1a0;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .file-btn:hover {
+      background: linear-gradient(90deg, #a78bfa 40%, #6366f1 100%);
+      transform: scale(1.06);
+    }
+    .main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 80vh;
+      padding: 0 4vw;
+      position: relative;
+    }
+    .left {
+      max-width: 650px;
+    }
+    .headline {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.08;
+      margin-bottom: 32px;
+      letter-spacing: 0.5px;
+    }
+    .subtext {
+      color: #a5b4fc;
+      font-size: 1.1rem;
+      margin-bottom: 44px;
+      max-width: 520px;
+    }
+    .cta-row {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 0;
+    }
+    .cta-row a button {
+      min-width: 160px;
+      font-size: 1.1rem;
+      border-radius: 32px;
+    }
+    .cta-row a .file-btn {
+      background: #23244d;
+      color: #fff;
+      border: 1.5px solid #6366f1;
+      box-shadow: none;
+    }
+    .cta-row a .file-btn:hover {
+      background: #6366f1;
+      color: #fff;
+    }
+    .right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .robot-img {
+      max-width: 420px;
+      width: 100%;
+      border-radius: 32px;
+      box-shadow: 0 8px 40px #6366f1a0,0 1.5px 8px #0f172a44;
+    }
+    .side-icons {
+      position: absolute;
+      right: 4vw;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      z-index: 3;
+    }
+    .side-icon-btn {
+      background: rgba(99,102,241,0.12);
+      border: none;
+      border-radius: 16px;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.7rem;
+      color: #fff;
+      transition: background 0.2s;
+    }
+    .side-icon-btn.active {
+      background: linear-gradient(180deg,#6366f1 60%,#a78bfa 100%);
+      box-shadow: 0 0 16px #6366f1a0;
+      color: #fff;
+    }
+    @media (max-width: 1100px) {
+      .main {
+        flex-direction: column;
+        padding: 0 2vw;
+        gap: 32px;
+      }
+      .right {
+        justify-content: center;
+        margin-top: 32px;
+      }
+      .side-icons {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        transform: none;
+        margin: 32px 0 0 0;
+        gap: 18px;
+      }
+    }
+    @media (max-width: 700px) {
+      nav {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 8px;
+      }
+      .main {
+        padding: 0 2vw;
+        gap: 18px;
+      }
+      .headline {
+        font-size: 2.1rem;
+      }
+      .robot-img {
+        max-width: 90vw;
+        max-height: 220px;
+      }
+      .side-icons {
+        gap: 10px;
+      }
+    }
+
+    nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(99,102,241,0.07);
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 2;
+            background: rgba(30,41,59,0.85);
+            border: 1.5px solid #6366f1;
+        }
+
+        .navigation a {
+            color: #f1f5f9;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+            position: relative;
+            letter-spacing: 0.7px;
+            padding-bottom: 2px;
+            transition: color 0.2s;
+        }
+
+        .navigation a:hover::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #6366f1;
+            border-radius: 2px;
+        }
+        .navigation a:hover {
+            color: #f59e42;
+        }
+
+        .dark-toggle {
+            background: #f59e42;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 2px 8px #f59e42a0;
+            margin-left: 10px;
+            font-size: 20px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .dark-toggle:hover {
+            background: #6366f1;
+            color: #fff;
+        }
+  </style>
+</head>
+<body>
+  <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+    <div class="shape shape4"></div>
+    <nav>
+        <a href="/">
+            <img src="/static/img/logo_law.png" height="55px" alt="CrimeCognizer Logo" />
+        </a>
+        <div class="navigation">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/complaint_page">Complain</a>
+        </div>
+    </nav>
+  <div class="main">
+    <div class="left">
+      <div class="headline" style="font-size:2.7rem;font-weight:800;color:#fff;line-height:1.08;margin-bottom:28px;letter-spacing:1px;text-shadow:0 4px 32px #23244d80,0 1px 0 #6366f1;">
+        <span style="color:#a78bfa;">CrimeCognizer </span><br>
+        <span style="color:#fff;">Instant legal help</span><br>
+        <span style="color:#6366f1;">via AI</span>
+      </div>
+      <div class="subtext" style="font-size:1.22rem;color:#bfcfff;font-weight:500;line-height:1.7;background:rgba(49,54,89,0.22);padding:18px 22px 18px 18px;border-radius:18px;box-shadow:0 2px 16px #6366f120;max-width:540px;margin-bottom:38px;">
+        CrimeCognizer is your AI-powered legal assistant, designed to make filing complaints and getting legal guidance effortless. Instantly receive the right IPC section for your case, clear legal explanations, and a secure, confidential experience—anytime, anywhere. Empowering you with technology for justice, CrimeCognizer bridges the gap between citizens and the law, making legal help accessible, fast, and reliable.
+      </div>
+      <div class="cta-row">
+        <a href="/about"><button class="file-btn" style="background:#6366f1;">Learn More</button></a>
+        <a href="/complaint_page"><button class="file-btn">File a Complaint</button></a>
+      </div>
+    </div>
+    <div class="right">
+      <img class="robot-img" src="static/qq.jpg" alt="AI Robot" />
+    </div>
+
+  </div>
+</body>
+</html>
+    

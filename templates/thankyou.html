@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Thank You</title>
+  <style>
+    body {
+      background-color: #001f3f;
+      color: white;
+      font-family: Arial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background-color: #003366;
+      padding: 2em;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px #00000060;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Thank You for Registration</h2>
+    <p>Your FIR Serial No. is: <strong id="serialNum"></strong></p>
+  </div>
+
+  <script>
+    // Generate a random 6-digit serial number
+    function generateSerial() {
+      return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+    // Use sessionStorage if available, else generate new
+    let serial = sessionStorage.getItem("firSerial");
+    if (!serial) {
+      serial = generateSerial();
+      sessionStorage.setItem("firSerial", serial);
+    }
+    document.getElementById("serialNum").textContent = serial;
+  </script>
+</body>
+</html>

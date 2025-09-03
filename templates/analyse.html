@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Complaint Analysis</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #102542;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 25px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #102542;
+      margin-bottom: 20px;
+    }
+
+    .complaint-info {
+      line-height: 1.8;
+      font-size: 17px;
+    }
+
+    button {
+      background-color: #102542;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      margin-top: 30px;
+      cursor: pointer;
+      float: right;
+    }
+
+    button:hover {
+      background-color: #1b3a57;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Complaint Analysis Report</h1>
+  </header>
+
+  <div class="container">
+    <h2>Complaint Details</h2>
+    <div class="complaint-info" id="complaintContent">
+      <!-- JS will inject content here -->
+    </div>
+
+    <button onclick="location.href='/fir_registration'">File FIR</button>
+  </div>
+
+  <script>
+    // Access protection
+    if (!localStorage.getItem("analyzedComplaint")) {
+      alert("Unauthorized access. Please register a complaint first.");
+      window.location.href = "/complaint_page";
+    } else {
+      // Load data
+      const data = JSON.parse(localStorage.getItem("analyzedComplaint"));
+      document.getElementById("complaintContent").innerHTML = `
+        <strong>Name:</strong> ${data.name}<br>
+        <strong>Contact:</strong> ${data.contact}<br>
+        <strong>Description:</strong> ${data.description}
+      `;
+    }
+  </script>
+</body>
+</html>

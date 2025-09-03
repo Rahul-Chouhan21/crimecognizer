@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="shortcut icon" type="image/x-icon" href="/static/img/logo.ico" />
+  <title>Complaint Analysis Result</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.4s, color 0.4s;
+    }
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #6366f1 100%);
+      color: #f1f5f9;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      letter-spacing: 0.02em;
+    }
+    body.dark-mode {
+      background: radial-gradient(circle at top left, #0a0a23, #1e293b 80%);
+      color: #e0e7ef;
+    }
+    .shape {
+      position: absolute;
+      z-index: 0;
+      opacity: 0.12;
+      pointer-events: none;
+      border-radius: 50%;
+      filter: blur(2px);
+      animation: float 8s ease-in-out infinite alternate;
+    }
+    .shape1 { width: 180px; height: 180px; background: #6366f1; top: 40px; left: -60px; animation-delay: 0s;}
+    .shape2 { width: 120px; height: 120px; background: #80705e; top: 400px; right: -50px; animation-delay: 2s;}
+    .shape3 { width: 90px; height: 90px; background: #10b981; bottom: 60px; left: 30vw; animation-delay: 1s;}
+    .shape4 { width: 60px; height: 60px; background: #ef4444; bottom: 120px; right: 10vw; animation-delay: 3s;}
+    @keyframes float {
+      0% { transform: translateY(0) scale(1);}
+      100% { transform: translateY(-30px) scale(1.1);}
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(99,102,241,0.07);
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 2;
+      background: rgba(30,41,59,0.85);
+      border: 1.5px solid #6366f1;
+    }
+    .navigation a {
+      color: #f1f5f9;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+      position: relative;
+      letter-spacing: 0.7px;
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .navigation a:hover::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #6366f1;
+      border-radius: 2px;
+    }
+    .navigation a:hover {
+      color: #f59e42;
+    }
+    .dark-toggle {
+      background: #f59e42;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #f59e42a0;
+      margin-left: 10px;
+      font-size: 20px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .dark-toggle:hover {
+      background: #6366f1;
+      color: #fff;
+    }
+    .result-modern-container {
+      background: rgba(30,41,59,0.92);
+      border: 1.5px solid #6366f1;
+      border-radius: 18px;
+      box-shadow: 0 8px 40px 0 #6366f1a0, 0 1.5px 8px #0f172a44;
+      color: #e0e7ef;
+      padding: 40px 36px 36px 36px;
+      max-width: 900px;
+      margin: 40px auto 0 auto;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .result-title {
+      color: #f59e42;
+      text-shadow: 0 2px 12px #6366f1a0;
+      font-size: 2.1rem;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.1;
+      text-align: center;
+    }
+    .data-block {
+      width: 100%;
+      margin-bottom: 16px;
+      padding: 12px 18px;
+      background: rgba(99,102,241,0.09);
+      border-left: 5px solid #6366f1;
+      border-radius: 8px;
+      font-size: 1.08rem;
+      color: #f1f5f9;
+      box-shadow: 0 2px 8px #6366f1a0;
+    }
+    .data-block strong {
+      display: inline-block;
+      width: 160px;
+      color: #f59e42;
+      font-weight: 600;
+    }
+    .badge {
+      background-color: #6366f1;
+      color: #fff;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+    .crime-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    .crime-meter {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #f43f5e 0%,
+        #e5e7eb 0%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: background 0.4s ease;
+      box-shadow: 0 2px 12px #f59e42a0;
+    }
+    .crime-meter::before {
+      content: '';
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      background-color: #1e293b;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .crime-meter-value {
+      font-size: 2.1rem;
+      font-weight: bold;
+      z-index: 2;
+      color: #f43f5e;
+    }
+    .crime-meter-label {
+      margin-top: 14px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #f59e42;
+      text-align: center;
+    }
+    .fir-button {
+      padding: 12px 28px;
+      font-size: 1.08rem;
+      font-weight: 600;
+      background-color: #f59e42;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px #f59e42a0;
+      transition: all 0.3s ease;
+      height: 48px;
+      align-self: center;
+    }
+    .fir-button:hover {
+      background-color: #6366f1;
+      color: #fff;
+      box-shadow: 0 6px 16px #6366f1a0;
+      transform: translateY(-2px);
+    }
+    @media screen and (max-width: 1100px) {
+      .result-modern-container {
+        padding: 24px 10px;
+      }
+      .crime-section {
+        flex-direction: column;
+      }
+    }
+    @media screen and (max-width: 700px) {
+      .result-modern-container {
+        padding: 12px 2px;
+      }
+      .crime-section {
+        flex-direction: column;
+        gap: 16px;
+      }
+    }
+    .main-footer {
+      margin-top: 60px;
+      text-align: center;
+      color: #a5b4fc;
+      font-size: 15px;
+      padding-bottom: 10px;
+      letter-spacing: 0.2px;
+      text-shadow: 0 1px 6px #6366f1a0;
+    }
+    body.dark-mode .main-footer {
+      color: #a1a1aa;
+    }
+    .footer-divider {
+      border-top: 1.5px solid #6366f1;
+      margin-bottom: 12px;
+      opacity: 0.3;
+    }
+    .footer-title {
+      font-weight: 700;
+      color: #f59e42;
+      margin-bottom: 4px;
+    }
+    .footer-details a {
+      color: #6366f1;
+      text-decoration: none;
+    }
+    .footer-details a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="shape shape1"></div>
+  <div class="shape shape2"></div>
+  <div class="shape shape3"></div>
+  <div class="shape shape4"></div>
+  <nav>
+    <a href="/">
+      <img src="/static/img/logo_law.png" height="55px" alt="CrimeCognizer Logo" />
+    </a>
+    <div class="navigation">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/complaint_page">Complain</a>
+      <button id="darkModeToggle" class="dark-toggle">🌙</button>
+    </div>
+  </nav>
+  <div class="result-modern-container">
+    <div class="result-title">Complaint Analysis Result</div>
+    <div class="data-block"><strong>Complaint:</strong> {{ complaint }}</div>
+    <div class="data-block"><strong>IPC Section:</strong> <span class="badge">{{ ipc }}</span></div>
+    <div class="data-block"><strong>ACT Name:</strong> {{ act_name }}</div>
+    <div class="data-block"><strong>Crime Type:</strong> {{ category }}</div>
+    <div class="data-block"><strong>Explanation:</strong> {{ explanation }}</div>
+    <div class="data-block"><strong>Punishment:</strong> {{ punishment }}</div>
+    <div class="crime-section">
+      <div class="crime-meter" id="crimeMeter">
+        <div class="crime-meter-value" id="crimeValue">0%</div>
+      </div>
+      <button class="fir-button" onclick="window.location.href='/fir_registration'">File FIR</button>
+    </div>
+    <div class="crime-meter-label">Crime Severity Meter</div>
+  </div>
+  <footer class="main-footer">
+    <div class="footer-divider"></div>
+    <div class="footer-content">
+      <div class="footer-title">Madhya Pradesh Police Headquarters</div>
+      <div class="footer-details">
+        Bhopal, MP, India &nbsp;|&nbsp; Helpline: <a href="tel:100">100</a> &nbsp;|&nbsp; Email: <a href="mailto:contact@mppolice.gov.in">contact@mppolice.gov.in</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const darkToggle = document.getElementById("darkModeToggle");
+    const body = document.body;
+    const currentTheme = localStorage.getItem("theme");
+    if (currentTheme === "dark") {
+      body.classList.add("dark-mode");
+      darkToggle.innerText = "☀️";
+    }
+    darkToggle.addEventListener("click", () => {
+      body.classList.toggle("dark-mode");
+      const theme = body.classList.contains("dark-mode") ? "dark" : "light";
+      darkToggle.innerText = theme === "dark" ? "☀️" : "🌙";
+      localStorage.setItem("theme", theme);
+    });
+    // Crime Meter Animation
+    const target = {{ intensity }};
+    const meter = document.getElementById('crimeMeter');
+    const valueEl = document.getElementById('crimeValue');
+    let current = 0;
+    const interval = setInterval(() => {
+      if (current >= target) {
+        clearInterval(interval);
+        return;
+      }
+      current++;
+      valueEl.textContent = current + '%';
+      meter.style.background = `conic-gradient(#f43f5e ${current}%, #e5e7eb ${current}%)`;
+    }, 20);
+  </script>
+</body>
+</html>

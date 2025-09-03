@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CrimeCognizer - All Complaints</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/static/img/logo.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f1f5f9;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(99,102,241,0.07);
+      margin-bottom: 30px;
+      background: rgba(30,41,59,0.85);
+      border: 1.5px solid #6366f1;
+    }
+
+    .navigation a {
+      color: #f1f5f9;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+
+    .navigation a:hover {
+      background: #6366f1;
+      color: #fff;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      color: #f59e42;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 12px #6366f1a0;
+    }
+
+    .page-header p {
+      color: #a5b4fc;
+      font-size: 1.1rem;
+    }
+
+    .controls {
+      background: rgba(30,41,59,0.92);
+      border: 1.5px solid #6366f1;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 32px rgba(99,102,241,0.15);
+    }
+
+    .search-filter {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #6366f1;
+      border-radius: 8px;
+      background: rgba(15,23,42,0.6);
+      color: #f1f5f9;
+      font-size: 1rem;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #f59e42;
+      box-shadow: 0 0 0 3px rgba(245, 158, 66, 0.1);
+    }
+
+    .filter-select {
+      padding: 12px 16px;
+      border: 1px solid #6366f1;
+      border-radius: 8px;
+      background: rgba(15,23,42,0.6);
+      color: #f1f5f9;
+      font-size: 1rem;
+      min-width: 150px;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: #f59e42;
+    }
+
+    .back-btn {
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .back-btn:hover {
+      background: #4f46e5;
+    }
+
+    .complaints-table {
+      background: rgba(30,41,59,0.92);
+      border: 1.5px solid #6366f1;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(99,102,241,0.15);
+    }
+
+    .table-header {
+      background: rgba(99,102,241,0.1);
+      padding: 20px;
+      border-bottom: 2px solid #6366f1;
+    }
+
+    .table-header h2 {
+      color: #f59e42;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #374151;
+    }
+
+    th {
+      background: rgba(15,23,42,0.8);
+      color: #f59e42;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      color: #e0e7ef;
+      font-size: 0.95rem;
+    }
+
+    tr:hover {
+      background: rgba(15,23,42,0.4);
+    }
+
+    .complaint-name {
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    .complaint-description {
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .complaint-time {
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .view-btn {
+      background: #10b981;
+      color: #fff;
+    }
+
+    .view-btn:hover {
+      background: #059669;
+    }
+
+    .delete-btn {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .delete-btn:hover {
+      background: #dc2626;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #9ca3af;
+      font-style: italic;
+      padding: 60px 20px;
+      font-size: 1.1rem;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 20px;
+    }
+
+    .page-btn {
+      padding: 8px 12px;
+      border: 1px solid #6366f1;
+      background: transparent;
+      color: #6366f1;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .page-btn:hover, .page-btn.active {
+      background: #6366f1;
+      color: #fff;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      .search-filter {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .search-box {
+        min-width: auto;
+      }
+      
+      .table-container {
+        font-size: 0.9rem;
+      }
+      
+      th, td {
+        padding: 10px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">
+      <img src="/static/img/logo_law.png" height="55px" alt="CrimeCognizer Logo" />
+    </a>
+    <div class="navigation">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/complaint_page">Complain</a>
+      <a href="/admin" style="background: #6366f1; color: #fff;">Admin Panel</a>
+      <a href="/logout" style="background: #ff4b5c; color: #fff;">Logout</a>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <h1>📝 All Complaints</h1>
+    <p>Manage and review all submitted complaints</p>
+  </div>
+
+  <div class="controls">
+    <div class="search-filter">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search complaints by name or description..." />
+      </div>
+      <select class="filter-select" id="sortSelect">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="name">Sort by Name</option>
+      </select>
+      <a href="/admin" class="back-btn">← Back to Admin</a>
+    </div>
+  </div>
+
+  <div class="complaints-table">
+    <div class="table-header">
+      <h2>Complaints List ({{ complaints|length }} total)</h2>
+    </div>
+    
+    {% if complaints %}
+      <div class="table-container">
+        <table id="complaintsTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Contact</th>
+              <th>Description</th>
+              <th>Timestamp</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for complaint in complaints %}
+            <tr class="complaint-row" data-name="{{ complaint.name|lower }}" data-description="{{ complaint.incident_description|lower }}">
+              <td>#{{ complaint.id }}</td>
+              <td class="complaint-name">{{ complaint.name }}</td>
+              <td>{{ complaint.contact or 'N/A' }}</td>
+              <td class="complaint-description" title="{{ complaint.incident_description }}">
+                {{ complaint.incident_description[:80] }}{% if complaint.incident_description|length > 80 %}...{% endif %}
+              </td>
+              <td class="complaint-time">
+                {{ complaint.timestamp.strftime('%Y-%m-%d %H:%M') if complaint.timestamp else 'N/A' }}
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <a href="/admin/complaint/{{ complaint.id }}" class="btn view-btn">View</a>
+                  <form method="POST" action="/admin/delete_complaint/{{ complaint.id }}" style="display: inline;">
+                    <button type="submit" class="btn delete-btn" onclick="return confirm('Are you sure you want to delete this complaint?')">Delete</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="no-data">
+        <h3>No complaints found</h3>
+        <p>There are no complaints in the system yet.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchInput');
+      const sortSelect = document.getElementById('sortSelect');
+      const complaintsTable = document.getElementById('complaintsTable');
+      const complaintRows = document.querySelectorAll('.complaint-row');
+
+      // Search functionality
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        
+        complaintRows.forEach(row => {
+          const name = row.dataset.name;
+          const description = row.dataset.description;
+          
+          if (name.includes(searchTerm) || description.includes(searchTerm)) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
+
+      // Sort functionality
+      sortSelect.addEventListener('change', function() {
+        const sortBy = this.value;
+        const tbody = complaintsTable.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        rows.sort((a, b) => {
+          if (sortBy === 'newest') {
+            const timeA = a.querySelector('.complaint-time').textContent;
+            const timeB = b.querySelector('.complaint-time').textContent;
+            return new Date(timeB) - new Date(timeA);
+          } else if (sortBy === 'oldest') {
+            const timeA = a.querySelector('.complaint-time').textContent;
+            const timeB = b.querySelector('.complaint-time').textContent;
+            return new Date(timeA) - new Date(timeB);
+          } else if (sortBy === 'name') {
+            const nameA = a.querySelector('.complaint-name').textContent.toLowerCase();
+            const nameB = b.querySelector('.complaint-name').textContent.toLowerCase();
+            return nameA.localeCompare(nameB);
+          }
+        });
+
+        // Re-append sorted rows
+        rows.forEach(row => tbody.appendChild(row));
+      });
+    });
+  </script>
+</body>
+</html>

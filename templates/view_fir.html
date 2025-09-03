@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CrimeCognizer - View FIR</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/static/img/logo.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f1f5f9;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(99,102,241,0.07);
+      margin-bottom: 30px;
+      background: rgba(30,41,59,0.85);
+      border: 1.5px solid #6366f1;
+    }
+
+    .navigation a {
+      color: #f1f5f9;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+
+    .navigation a:hover {
+      background: #6366f1;
+      color: #fff;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      color: #f59e42;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 12px #6366f1a0;
+    }
+
+    .page-header p {
+      color: #a5b4fc;
+      font-size: 1.1rem;
+    }
+
+    .fir-details {
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(30,41,59,0.92);
+      border: 1.5px solid #6366f1;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(99,102,241,0.15);
+    }
+
+    .detail-section {
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #374151;
+    }
+
+    .detail-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      color: #f59e42;
+      font-weight: 600;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      padding: 12px 16px;
+      background: rgba(15,23,42,0.4);
+      border-radius: 8px;
+      border: 1px solid #374151;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: #a5b4fc;
+      min-width: 180px;
+      font-size: 0.95rem;
+    }
+
+    .detail-value {
+      color: #f1f5f9;
+      text-align: right;
+      flex: 1;
+      margin-left: 20px;
+      word-break: break-word;
+    }
+
+    .description-box {
+      background: rgba(15,23,42,0.6);
+      border: 1px solid #6366f1;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 15px;
+    }
+
+    .description-text {
+      color: #e0e7ef;
+      line-height: 1.6;
+      font-size: 1rem;
+      white-space: pre-wrap;
+    }
+
+    .file-section {
+      background: rgba(15,23,42,0.6);
+      border: 1px solid #6366f1;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 15px;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: rgba(30,41,59,0.4);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #374151;
+    }
+
+    .file-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .file-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .file-icon {
+      font-size: 1.2rem;
+    }
+
+    .file-name {
+      color: #f1f5f9;
+      font-weight: 500;
+    }
+
+    .file-status {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .file-available {
+      background: #10b981;
+      color: #fff;
+    }
+
+    .file-missing {
+      background: #6b7280;
+      color: #fff;
+    }
+
+    .download-btn {
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+      text-decoration: none;
+    }
+
+    .download-btn:hover {
+      background: #4f46e5;
+    }
+
+    .timestamp-info {
+      background: rgba(99,102,241,0.1);
+      border: 1px solid #6366f1;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .timestamp-label {
+      color: #a5b4fc;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    .timestamp-value {
+      color: #f59e42;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid #374151;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .back-btn {
+      background: #6366f1;
+      color: #fff;
+    }
+
+    .back-btn:hover {
+      background: #4f46e5;
+    }
+
+    .delete-btn {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .delete-btn:hover {
+      background: #dc2626;
+    }
+
+    .edit-btn {
+      background: #f59e42;
+      color: #fff;
+    }
+
+    .edit-btn:hover {
+      background: #d97706;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-registered {
+      background: #10b981;
+      color: #065f46;
+    }
+
+    @media (max-width: 768px) {
+      .fir-details {
+        padding: 20px;
+        margin: 0 10px;
+      }
+      
+      .detail-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .detail-label {
+        min-width: auto;
+        margin-bottom: 8px;
+      }
+      
+      .detail-value {
+        text-align: left;
+        margin-left: 0;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .file-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">
+      <img src="/static/img/logo_law.png" height="55px" alt="CrimeCognizer Logo" />
+    </a>
+    <div class="navigation">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/complaint_page">Complain</a>
+      <a href="/admin" style="background: #6366f1; color: #fff;">Admin Panel</a>
+      <a href="/logout" style="background: #ff4b5c; color: #fff;">Logout</a>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <h1>📋 FIR Details</h1>
+    <p>View detailed information about FIR #{{ fir.id }}</p>
+  </div>
+
+  <div class="fir-details">
+    <div class="detail-section">
+      <h2 class="section-title">👤 Complainant Information</h2>
+      
+      <div class="detail-row">
+        <span class="detail-label">Full Name:</span>
+        <span class="detail-value">{{ fir.name }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Email Address:</span>
+        <span class="detail-value">{{ fir.email or 'Not provided' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Age:</span>
+        <span class="detail-value">{{ fir.age or 'Not provided' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Gender:</span>
+        <span class="detail-value">{{ fir.gender or 'Not provided' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Father's Name:</span>
+        <span class="detail-value">{{ fir.father_name or 'Not provided' }}</span>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h2 class="section-title">📍 Address Information</h2>
+      
+      <div class="detail-row">
+        <span class="detail-label">Present Address:</span>
+        <span class="detail-value">{{ fir.present_address or 'Not provided' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">District:</span>
+        <span class="detail-value">{{ fir.district or 'Not provided' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Police Station:</span>
+        <span class="detail-value">{{ fir.police_station or 'Not provided' }}</span>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h2 class="section-title">🚨 Incident Information</h2>
+      
+      <div class="detail-row">
+        <span class="detail-label">FIR ID:</span>
+        <span class="detail-value">#{{ fir.id }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Status:</span>
+        <span class="detail-value">
+          <span class="status-badge status-registered">Registered</span>
+        </span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Incident District:</span>
+        <span class="detail-value">{{ fir.incident_district or 'Not provided' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Incident Police Station:</span>
+        <span class="detail-value">{{ fir.incident_police_station or 'Not provided' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Complaint Type:</span>
+        <span class="detail-value">{{ fir.complaint_type or 'Not specified' }}</span>
+      </div>
+      
+      <div class="description-box">
+        <div class="detail-label" style="margin-bottom: 10px;">Nature of Complaint:</div>
+        <div class="description-text">{{ fir.nature_of_complaint or 'No description provided' }}</div>
+      </div>
+      
+      {% if fir.fir_content %}
+      <div class="description-box">
+        <div class="detail-label" style="margin-bottom: 10px;">FIR Content:</div>
+        <div class="description-text">{{ fir.fir_content }}</div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="detail-section">
+      <h2 class="section-title">📎 Attached Files</h2>
+      
+      <div class="file-section">
+        <div class="file-item">
+          <div class="file-info">
+            <span class="file-icon">📄</span>
+            <span class="file-name">FIR Document</span>
+          </div>
+          <div class="file-status {% if fir.fir_file_path %}file-available{% else %}file-missing{% endif %}">
+            {% if fir.fir_file_path %}Available{% else %}Not uploaded{% endif %}
+          </div>
+          {% if fir.fir_file_path %}
+          <a href="/uploads/{{ fir.fir_file_path.split('/')[-1] }}" class="download-btn" download>Download</a>
+          {% endif %}
+        </div>
+        
+        <div class="file-item">
+          <div class="file-info">
+            <span class="file-icon">🔍</span>
+            <span class="file-name">Evidence Files</span>
+          </div>
+          <div class="file-status {% if fir.evidence_file_path %}file-available{% else %}file-missing{% endif %}">
+            {% if fir.evidence_file_path %}Available{% else %}Not uploaded{% endif %}
+          </div>
+          {% if fir.evidence_file_path %}
+          <a href="/uploads/{{ fir.evidence_file_path.split('/')[-1] }}" class="download-btn" download>Download</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h2 class="section-title">📅 Timestamp Information</h2>
+      
+      <div class="timestamp-info">
+        <div class="timestamp-label">FIR Registered On:</div>
+        <div class="timestamp-value">
+          {{ fir.timestamp.strftime('%B %d, %Y at %I:%M %p') if fir.timestamp else 'Timestamp not available' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <a href="/admin/firs" class="btn back-btn">← Back to FIRs</a>
+      <a href="/admin" class="btn edit-btn">Admin Dashboard</a>
+      <form method="POST" action="/admin/delete_fir/{{ fir.id }}" style="display: inline;">
+        <button type="submit" class="btn delete-btn" onclick="return confirm('Are you sure you want to delete this FIR? This action cannot be undone and will also delete associated files.')">Delete FIR</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('FIR details loaded successfully');
+      
+      // Add any interactive features here
+      const deleteBtn = document.querySelector('.delete-btn');
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', function(e) {
+          if (!confirm('Are you sure you want to delete this FIR? This action cannot be undone and will also delete associated files.')) {
+            e.preventDefault();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

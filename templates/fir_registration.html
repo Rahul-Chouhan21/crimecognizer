@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FIR Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(to right, #001f3f, #003366);
+      color: #fff;
+    }
+    nav {
+      background-color: #000c1f;
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 1em;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      max-width: 900px;
+      margin: 2em auto;
+      background: #ffffff10;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00000050;
+    }
+    label {
+      display: block;
+      margin-top: 1em;
+      font-weight: bold;
+      color: #fff;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.5em;
+      margin-top: 0.3em;
+      border-radius: 5px;
+      border: none;
+      background: #ffffffdd;
+      color: #000;
+    }
+    .radio-group {
+      display: flex;
+      gap: 2em;
+      margin-top: 0.5em;
+    }
+    .btn {
+      background-color: #0074D9;
+      color: white;
+      padding: 0.7em 1.2em;
+      margin-top: 1.5em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div><strong>eFIR Portal</strong></div>
+    <div>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/complaint_page">Complaint</a>
+    </div>
+  </nav>
+
+  <!-- FIR FORM -->
+  <div class="container">
+    <h2>FIR Registration Form</h2>
+    <form id="firForm" method="POST" action="/fir_registration" enctype="multipart/form-data">
+      <label>FIR Filed By</label>
+      <div class="radio-group">
+        <label><input type="radio" name="filedBy" value="Self" required> Self</label>
+        <label><input type="radio" name="filedBy" value="On Behalf"> On Someone's Behalf</label>
+      </div>
+
+      <label>Name</label>
+      <input type="text" name="name" required />
+
+      <label>Email ID</label>
+      <input type="email" name="email" required />
+
+      <label>Age</label>
+      <input type="number" name="age" required />
+
+      <label>Gender</label>
+      <select name="gender" required>
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label>Father's Name</label>
+      <input type="text" name="father_name" required />
+
+      <label>Present Address</label>
+      <textarea name="present_address" required></textarea>
+
+      <label>District</label>
+      <input type="text" name="district" required />
+
+      <label>Police Station</label>
+      <input type="text" name="police_station" required />
+
+      <label>Incident District</label>
+      <input type="text" name="incident_district" required />
+
+      <label>Incident Police Station</label>
+      <input type="text" name="incident_police_station" required />
+
+      <label>Nature of Complaint</label>
+      <select name="nature_of_complaint" required>
+        <option value="">Select Type</option>
+        <option value="Loot">Loot</option>
+        <option value="Cyber Crime">Cyber Crime</option>
+        <option value="Missing of Children">Missing of Children</option>
+        <option value="Burglary">Burglary</option>
+        <option value="Theft">Theft</option>
+        <option value="FICN (Fake Indian Currency Notes)">FICN (Fake Indian Currency Notes)</option>
+      </select>
+
+      <label>Complaint Type</label>
+      <input type="text" name="complaint_type" required />
+
+      <label>FIR Content (Details)</label>
+      <textarea name="fir_content" required></textarea>
+
+      <label>Upload FIR (PDF or Image)</label>
+      <input type="file" name="fir_file" accept=".pdf,.jpg,.jpeg,.png" required />
+
+      <label>Upload Evidence (Optional)</label>
+      <input type="file" name="evidence_file" accept=".jpg,.jpeg,.png,.pdf"/>
+
+      <button class="btn" type="submit">Submit FIR</button>
+      <div style="text-align: right; margin-top: 1em;">
+        <button class="btn" type="button" onclick="downloadFIR()">Download FIR</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // 🛡 Block if not logged in
+    // Redirect to login if not logged in
+  
+
+
+    function downloadFIR() {
+      const dummyText = "This is a dummy FIR content for printout.";
+      const canvas = document.createElement("canvas");
+      canvas.width = 600;
+      canvas.height = 300;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, 600, 300);
+      ctx.fillStyle = "black";
+      ctx.font = "16px Arial";
+      ctx.fillText(dummyText, 50, 150);
+      const link = document.createElement("a");
+      link.download = "FIR.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  </script>
+  <div>
+
+  
+  </div>
+
+
+  
+</body>
+</html>
